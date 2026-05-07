@@ -1,0 +1,3404 @@
+[
+    {
+        "id": 1,
+        "Q1": {
+            "Query_Self_Contained": "Find questions from 2023 that report errors related to PostgreSQL.",
+            "plan": [
+                {
+                    "operator_name": "sem_filter",
+                    "parameters": {
+                        "columns": [
+                            [
+                                "creation_date"
+                            ]
+                        ],
+                        "condition": "Keep content from 2023."
+                    }
+                },
+                {
+                    "operator_name": "sem_filter",
+                    "parameters": {
+                        "columns": [
+                            [
+                                "title",
+                                "body",
+                                "tags",
+                                "comments",
+                                "creation_date"
+                            ]
+                        ],
+                        "condition": "Keep content reporting errors related to PostgreSQL."
+                    }
+                }
+            ]
+        },
+        "Q2": {
+            "Query_Self_Contained": "In questions from 2023 that report errors related to PostgreSQL, what are the reported errors?",
+            "plan": [
+                {
+                    "operator_name": "sem_filter",
+                    "parameters": {
+                        "columns": [
+                            [
+                                "creation_date"
+                            ]
+                        ],
+                        "condition": "Keep content from 2023."
+                    }
+                },
+                {
+                    "operator_name": "sem_filter",
+                    "parameters": {
+                        "columns": [
+                            [
+                                "title",
+                                "body",
+                                "tags",
+                                "comments",
+                                "creation_date"
+                            ]
+                        ],
+                        "condition": "Keep content reporting errors related to PostgreSQL."
+                    }
+                },
+                {
+                    "operator_name": "sem_map",
+                    "parameters": {
+                        "columns": [],
+                        "map_description": "This dimension represents the errors reported in the data, such as system errors, user errors, or other types of errors that occurred.",
+                        "keyword": "reported_errors"
+                    }
+                }
+            ]
+        },
+        "Q3": {
+            "Query_Self_Contained": "Please find the reported errors and organize them into error categories, for the questions from 2023 year that report errors related to PostgreSQL",
+            "plan": [
+                {
+                    "operator_name": "sem_filter",
+                    "parameters": {
+                        "columns": [
+                            [
+                                "creation_date"
+                            ]
+                        ],
+                        "condition": "Keep content from 2023."
+                    }
+                },
+                {
+                    "operator_name": "sem_filter",
+                    "parameters": {
+                        "columns": [
+                            [
+                                "title",
+                                "body",
+                                "tags",
+                                "comments",
+                                "creation_date"
+                            ]
+                        ],
+                        "condition": "Keep content reporting errors related to PostgreSQL."
+                    }
+                },
+                {
+                    "operator_name": "sem_map",
+                    "parameters": {
+                        "columns": [],
+                        "map_description": "This dimension represents the errors reported in the data, such as system errors, user errors, or other types of errors that occurred.",
+                        "keyword": "reported_errors"
+                    }
+                },
+                {
+                    "operator_name": "sem_group",
+                    "parameters": {
+                        "columns": [
+                            "reported_errors"
+                        ],
+                        "group_description": "group into granularity error_category",
+                        "keyword": "error_category"
+                    }
+                }
+            ]
+        },
+        "Q4": {
+            "Query_Self_Contained": "Identify the most frequently occurring error category, for the questions from 2023 that report errors related to PostgreSQL.",
+            "plan": [
+                {
+                    "operator_name": "sem_filter",
+                    "parameters": {
+                        "columns": [
+                            [
+                                "creation_date"
+                            ]
+                        ],
+                        "condition": "Keep content from 2023."
+                    }
+                },
+                {
+                    "operator_name": "sem_filter",
+                    "parameters": {
+                        "columns": [
+                            [
+                                "title",
+                                "body",
+                                "tags",
+                                "comments",
+                                "creation_date"
+                            ]
+                        ],
+                        "condition": "Keep content reporting errors related to PostgreSQL."
+                    }
+                },
+                {
+                    "operator_name": "sem_map",
+                    "parameters": {
+                        "columns": [],
+                        "map_description": "This dimension represents the errors reported in the data, such as system errors, user errors, or other types of errors that occurred.",
+                        "keyword": "reported_errors"
+                    }
+                },
+                {
+                    "operator_name": "sem_group",
+                    "parameters": {
+                        "columns": [
+                            "reported_errors"
+                        ],
+                        "group_description": "group into granularity error_category",
+                        "keyword": "error_category"
+                    }
+                },
+                {
+                    "operator_name": "count",
+                    "parameters": {
+                        "group_by": "error_category",
+                        "columns": []
+                    }
+                },
+                {
+                    "operator_name": "num_topk",
+                    "parameters": {
+                        "column": "count_of_error_category",
+                        "k": 1,
+                        "order": "desc"
+                    }
+                }
+            ]
+        }
+    },
+    {
+        "id": 2,
+        "Q1": {
+            "Query_Self_Contained": "Find 2009 questions contain 'mysql' in tags where the user reports an operation failed or didn’t work as expected.",
+            "plan": [
+                {
+                    "operator_name": "keyword_filter",
+                    "parameters": {
+                        "columns": [
+                            "tags"
+                        ],
+                        "keywords": [
+                            [
+                                "mysql"
+                            ]
+                        ],
+                        "logic": "or",
+                        "relation": "contains"
+                    }
+                },
+                {
+                    "operator_name": "sem_filter",
+                    "parameters": {
+                        "columns": [
+                            [
+                                "creation_date"
+                            ]
+                        ],
+                        "condition": "Keep questions created in the year 2009"
+                    }
+                },
+                {
+                    "operator_name": "sem_filter",
+                    "parameters": {
+                        "columns": [
+                            [
+                                "question_id",
+                                "title",
+                                "body",
+                                "comments",
+                                "answers"
+                            ]
+                        ],
+                        "condition": "Keep questions with user reports of failed operations or unexpected results"
+                    }
+                }
+            ]
+        },
+        "Q2": {
+            "Query_Self_Contained": "Find 2009 questions contain 'mysql' in tags where the user reports an operation failed or didn’t work as expected. Do any of these show misunderstandings of MySQL features or behaviors?",
+            "plan": [
+                {
+                    "operator_name": "keyword_filter",
+                    "parameters": {
+                        "columns": [
+                            "tags"
+                        ],
+                        "keywords": [
+                            [
+                                "mysql"
+                            ]
+                        ],
+                        "logic": "or",
+                        "relation": "contains"
+                    }
+                },
+                {
+                    "operator_name": "sem_filter",
+                    "parameters": {
+                        "columns": [
+                            [
+                                "creation_date"
+                            ]
+                        ],
+                        "condition": "Keep questions created in the year 2009"
+                    }
+                },
+                {
+                    "operator_name": "sem_filter",
+                    "parameters": {
+                        "columns": [
+                            [
+                                "question_id",
+                                "title",
+                                "body",
+                                "comments",
+                                "answers"
+                            ]
+                        ],
+                        "condition": "Keep questions with user reports of failed operations or unexpected results"
+                    }
+                },
+                {
+                    "operator_name": "sem_map",
+                    "parameters": {
+                        "columns": [],
+                        "map_description": "A dimension to capture and categorize common misunderstandings in MySQL features or behaviors as revealed in question content.",
+                        "keyword": "MySQL_misunderstandings"
+                    }
+                }
+            ]
+        },
+        "Q3": {
+            "Query_Self_Contained": "Find 2009 questions contain 'mysql' in tags where the user reports an operation failed or didn’t work as expected. Are users mainly asking how to fix the issue, or trying to understand why it happened?",
+            "plan": [
+                {
+                    "operator_name": "keyword_filter",
+                    "parameters": {
+                        "columns": [
+                            "tags"
+                        ],
+                        "keywords": [
+                            [
+                                "mysql"
+                            ]
+                        ],
+                        "logic": "or",
+                        "relation": "contains"
+                    }
+                },
+                {
+                    "operator_name": "sem_filter",
+                    "parameters": {
+                        "columns": [
+                            [
+                                "creation_date"
+                            ]
+                        ],
+                        "condition": "Keep questions created in the year 2009"
+                    }
+                },
+                {
+                    "operator_name": "sem_filter",
+                    "parameters": {
+                        "columns": [
+                            [
+                                "question_id",
+                                "title",
+                                "body",
+                                "comments",
+                                "answers"
+                            ]
+                        ],
+                        "condition": "Keep questions with user reports of failed operations or unexpected results"
+                    }
+                },
+                {
+                    "operator_name": "sem_map",
+                    "parameters": {
+                        "columns": [],
+                        "map_description": "A more detailed dimension to explicitly categorize each query on whether it's related to fixing the issue or understanding the problem.",
+                        "keyword": "query_category"
+                    }
+                }
+            ]
+        },
+        "Q4": {
+            "Query_Self_Contained": "Find 2009 questions contain 'mysql' in tags where the user reports an operation failed or didn’t work as expected. Group the questions by misunderstanding type and compare how users framed their intent in each group.",
+            "plan": [
+                {
+                    "operator_name": "keyword_filter",
+                    "parameters": {
+                        "columns": [
+                            "tags"
+                        ],
+                        "keywords": [
+                            [
+                                "mysql"
+                            ]
+                        ],
+                        "logic": "or",
+                        "relation": "contains"
+                    }
+                },
+                {
+                    "operator_name": "sem_filter",
+                    "parameters": {
+                        "columns": [
+                            [
+                                "creation_date"
+                            ]
+                        ],
+                        "condition": "Keep questions created in the year 2009"
+                    }
+                },
+                {
+                    "operator_name": "sem_filter",
+                    "parameters": {
+                        "columns": [
+                            [
+                                "question_id",
+                                "title",
+                                "body",
+                                "comments",
+                                "answers"
+                            ]
+                        ],
+                        "condition": "Keep questions with user reports of failed operations or unexpected results"
+                    }
+                },
+                {
+                    "operator_name": "sem_map",
+                    "parameters": {
+                        "columns": [],
+                        "map_description": "A dimension representing the different ways users frame their intent when asking a question.",
+                        "keyword": "user_intent_framing"
+                    }
+                }
+            ]
+        }
+    },
+    {
+        "id": 3,
+        "Q1": {
+            "Query_Self_Contained": "Find questions from 2009 with a score above 5",
+            "plan": [
+                {
+                    "operator_name": "num_filter",
+                    "parameters": {
+                        "conditions": [
+                            {
+                                "column": "score",
+                                "threshold": 5,
+                                "operator": ">"
+                            }
+                        ]
+                    }
+                },
+                {
+                    "operator_name": "sem_filter",
+                    "parameters": {
+                        "columns": [
+                            [
+                                "creation_date"
+                            ]
+                        ],
+                        "condition": "Questions created in the year 2009"
+                    }
+                }
+            ]
+        },
+        "Q2": {
+            "Query_Self_Contained": "Extract the questions types for the questions from 2009 with a score above 5.",
+            "plan": [
+                {
+                    "operator_name": "num_filter",
+                    "parameters": {
+                        "conditions": [
+                            {
+                                "column": "score",
+                                "threshold": 5,
+                                "operator": ">"
+                            }
+                        ]
+                    }
+                },
+                {
+                    "operator_name": "sem_filter",
+                    "parameters": {
+                        "columns": [
+                            [
+                                "creation_date"
+                            ]
+                        ],
+                        "condition": "Questions created in the year 2009"
+                    }
+                },
+                {
+                    "operator_name": "sem_map",
+                    "parameters": {
+                        "columns": [],
+                        "map_description": "A metadata structure or annotation layer that uses existing tags to heuristically assign question types, which indirectly fulfills the user query.",
+                        "keyword": "question_type_annotation"
+                    }
+                }
+            ]
+        },
+        "Q3": {
+            "Query_Self_Contained": "Among the usage-related questions from 2009 with a score above 5, what specific operations do users seem to struggle with?",
+            "plan": [
+                {
+                    "operator_name": "num_filter",
+                    "parameters": {
+                        "conditions": [
+                            {
+                                "column": "score",
+                                "threshold": 5,
+                                "operator": ">"
+                            }
+                        ]
+                    }
+                },
+                {
+                    "operator_name": "sem_filter",
+                    "parameters": {
+                        "columns": [
+                            [
+                                "creation_date"
+                            ]
+                        ],
+                        "condition": "Questions created in the year 2009"
+                    }
+                },
+                {
+                    "operator_name": "sem_filter",
+                    "parameters": {
+                        "columns": [
+                            [
+                                "title",
+                                "body",
+                                "tags",
+                                "answers",
+                                "question_type_annotation"
+                            ]
+                        ],
+                        "condition": "Retain questions addressing usage-related topics."
+                    }
+                },
+                {
+                    "operator_name": "sem_map",
+                    "parameters": {
+                        "columns": [],
+                        "map_description": "A dimension that captures user feedback or error reports related to specific operations, potentially indicating struggling points.",
+                        "keyword": "operation_feedback"
+                    }
+                }
+            ]
+        },
+        "Q4": {
+            "Query_Self_Contained": "Among the usage-related questions from 2009 with a score above 5, which questions have answers that clearly provide a solution?",
+            "plan": [
+                {
+                    "operator_name": "num_filter",
+                    "parameters": {
+                        "conditions": [
+                            {
+                                "column": "score",
+                                "threshold": 5,
+                                "operator": ">"
+                            }
+                        ]
+                    }
+                },
+                {
+                    "operator_name": "sem_filter",
+                    "parameters": {
+                        "columns": [
+                            [
+                                "creation_date"
+                            ]
+                        ],
+                        "condition": "Questions created in the year 2009"
+                    }
+                },
+                {
+                    "operator_name": "sem_filter",
+                    "parameters": {
+                        "columns": [
+                            [
+                                "title",
+                                "body",
+                                "tags",
+                                "answers",
+                                "question_type_annotation"
+                            ]
+                        ],
+                        "condition": "Retain questions addressing usage-related topics."
+                    }
+                },
+                {
+                    "operator_name": "sem_map",
+                    "parameters": {
+                        "columns": [],
+                        "map_description": "A flag indicating whether an answer is considered the 'solution' for a question.",
+                        "keyword": "solution_indicator"
+                    }
+                }
+            ]
+        }
+    },
+    {
+        "id": 4,
+        "Q1": {
+            "Query_Self_Contained": "Find questions from 2013 that include error messages.",
+            "plan": [
+                {
+                    "operator_name": "sem_filter",
+                    "parameters": {
+                        "columns": [
+                            [
+                                "creation_date"
+                            ]
+                        ],
+                        "condition": "Keep entries from 2013."
+                    }
+                },
+                {
+                    "operator_name": "sem_filter",
+                    "parameters": {
+                        "columns": [
+                            [
+                                "title",
+                                "body",
+                                "comments",
+                                "answers"
+                            ]
+                        ],
+                        "condition": "Keep entries that mention error messages."
+                    }
+                }
+            ]
+        },
+        "Q2": {
+            "Query_Self_Contained": "Find 2013 questions that include error messages and express difficulty understanding them.",
+            "plan": [
+                {
+                    "operator_name": "sem_filter",
+                    "parameters": {
+                        "columns": [
+                            [
+                                "creation_date"
+                            ]
+                        ],
+                        "condition": "Keep entries from 2013."
+                    }
+                },
+                {
+                    "operator_name": "sem_filter",
+                    "parameters": {
+                        "columns": [
+                            [
+                                "title",
+                                "body",
+                                "comments",
+                                "answers"
+                            ]
+                        ],
+                        "condition": "Keep entries that mention error messages."
+                    }
+                },
+                {
+                    "operator_name": "sem_filter",
+                    "parameters": {
+                        "columns": [
+                            [
+                                "title",
+                                "body",
+                                "comments",
+                                "answers"
+                            ]
+                        ],
+                        "condition": "Retain content where users express difficulty understanding presented error messages."
+                    }
+                }
+            ]
+        },
+        "Q3": {
+            "Query_Self_Contained": "Find 2013 questions that include error messages and express difficulty understanding them. Summarize common phrases of confusion in these questions.",
+            "plan": [
+                {
+                    "operator_name": "sem_filter",
+                    "parameters": {
+                        "columns": [
+                            [
+                                "creation_date"
+                            ]
+                        ],
+                        "condition": "Keep entries from 2013."
+                    }
+                },
+                {
+                    "operator_name": "sem_filter",
+                    "parameters": {
+                        "columns": [
+                            [
+                                "title",
+                                "body",
+                                "comments",
+                                "answers"
+                            ]
+                        ],
+                        "condition": "Keep entries that mention error messages."
+                    }
+                },
+                {
+                    "operator_name": "sem_filter",
+                    "parameters": {
+                        "columns": [
+                            [
+                                "title",
+                                "body",
+                                "comments",
+                                "answers"
+                            ]
+                        ],
+                        "condition": "Retain content where users express difficulty understanding presented error messages."
+                    }
+                },
+                {
+                    "operator_name": "sem_map",
+                    "parameters": {
+                        "columns": [],
+                        "map_description": "A dimension to capture common phrases of confusion expressed in the questions.",
+                        "keyword": "phrases_of_confusion"
+                    }
+                },
+                {
+                    "operator_name": "count",
+                    "parameters": {
+                        "group_by": "phrases_of_confusion",
+                        "columns": []
+                    }
+                }
+            ]
+        },
+        "Q4": {
+            "Query_Self_Contained": "Find 2013 questions that include error messages and express difficulty understanding them. Assess how ambiguous the error messages are as perceived by the answers, and analyze how the degree of ambiguity relates to different types of user confusion.",
+            "plan": [
+                {
+                    "operator_name": "sem_filter",
+                    "parameters": {
+                        "columns": [
+                            [
+                                "creation_date"
+                            ]
+                        ],
+                        "condition": "Keep entries from 2013."
+                    }
+                },
+                {
+                    "operator_name": "sem_filter",
+                    "parameters": {
+                        "columns": [
+                            [
+                                "title",
+                                "body",
+                                "comments",
+                                "answers"
+                            ]
+                        ],
+                        "condition": "Keep entries that mention error messages."
+                    }
+                },
+                {
+                    "operator_name": "sem_filter",
+                    "parameters": {
+                        "columns": [
+                            [
+                                "title",
+                                "body",
+                                "comments",
+                                "answers"
+                            ]
+                        ],
+                        "condition": "Retain content where users express difficulty understanding presented error messages."
+                    }
+                },
+                {
+                    "operator_name": "sem_map",
+                    "parameters": {
+                        "columns": [],
+                        "map_description": "A dimension representing the perceived ambiguity of error messages, capturing the uncertainty and clarity levels in the messages provided.",
+                        "keyword": "error_message_ambiguity"
+                    }
+                },
+                {
+                    "operator_name": "sem_map",
+                    "parameters": {
+                        "columns": [],
+                        "map_description": "A dimension to capture common phrases of confusion expressed in the questions.",
+                        "keyword": "phrases_of_confusion"
+                    }
+                },
+                {
+                    "operator_name": "sem_reduce",
+                    "parameters": {
+                        "columns": [
+                            "phrases_of_confusion"
+                        ],
+                        "group_by": "error_message_ambiguity"
+                    }
+                }
+            ]
+        }
+    },
+    {
+        "id": 5,
+        "Q1": {
+            "Query_Self_Contained": "Find 2010 to 2015 questions with score higher than 5.",
+            "plan": [
+                {
+                    "operator_name": "num_filter",
+                    "parameters": {
+                        "conditions": [
+                            {
+                                "column": "score",
+                                "threshold": 5,
+                                "operator": ">"
+                            }
+                        ]
+                    }
+                },
+                {
+                    "operator_name": "sem_filter",
+                    "parameters": {
+                        "columns": [
+                            [
+                                "creation_date"
+                            ]
+                        ],
+                        "condition": "Keep questions created from 2010 to 2015"
+                    }
+                }
+            ]
+        },
+        "Q2": {
+            "Query_Self_Contained": "Filter questions that report query performance issues ,from questions between 2010 and 2015 with a score higher than 5.",
+            "plan": [
+                {
+                    "operator_name": "num_filter",
+                    "parameters": {
+                        "conditions": [
+                            {
+                                "column": "score",
+                                "threshold": 5,
+                                "operator": ">"
+                            }
+                        ]
+                    }
+                },
+                {
+                    "operator_name": "sem_filter",
+                    "parameters": {
+                        "columns": [
+                            [
+                                "creation_date"
+                            ]
+                        ],
+                        "condition": "Keep questions created from 2010 to 2015"
+                    }
+                },
+                {
+                    "operator_name": "sem_filter",
+                    "parameters": {
+                        "columns": [
+                            [
+                                "title",
+                                "body",
+                                "tags",
+                                "comments",
+                                "answers"
+                            ]
+                        ],
+                        "condition": "Keep questions that report query performance issues in their content."
+                    }
+                }
+            ]
+        },
+        "Q3": {
+            "Query_Self_Contained": "From questions posted between 2010 and 2015 with a score higher than 5 that report query performance issues, extract the reported causes of the performance problems.",
+            "plan": [
+                {
+                    "operator_name": "num_filter",
+                    "parameters": {
+                        "conditions": [
+                            {
+                                "column": "score",
+                                "threshold": 5,
+                                "operator": ">"
+                            }
+                        ]
+                    }
+                },
+                {
+                    "operator_name": "sem_filter",
+                    "parameters": {
+                        "columns": [
+                            [
+                                "creation_date"
+                            ]
+                        ],
+                        "condition": "Keep questions created from 2010 to 2015"
+                    }
+                },
+                {
+                    "operator_name": "sem_filter",
+                    "parameters": {
+                        "columns": [
+                            [
+                                "title",
+                                "body",
+                                "tags",
+                                "comments",
+                                "answers"
+                            ]
+                        ],
+                        "condition": "Keep questions that report query performance issues in their content."
+                    }
+                },
+                {
+                    "operator_name": "sem_map",
+                    "parameters": {
+                        "columns": [],
+                        "map_description": "Dimension representing reported causes of performance problems, capturing descriptions and reasons behind performance issues.",
+                        "keyword": "reported_causes"
+                    }
+                }
+            ]
+        },
+        "Q4": {
+            "Query_Self_Contained": "From questions posted between 2010 and 2015 with a score higher than 5 that report query performance issues, group the issue causes and identify the most common cause category.",
+            "plan": [
+                {
+                    "operator_name": "num_filter",
+                    "parameters": {
+                        "conditions": [
+                            {
+                                "column": "score",
+                                "threshold": 5,
+                                "operator": ">"
+                            }
+                        ]
+                    }
+                },
+                {
+                    "operator_name": "sem_filter",
+                    "parameters": {
+                        "columns": [
+                            [
+                                "creation_date"
+                            ]
+                        ],
+                        "condition": "Keep questions created from 2010 to 2015"
+                    }
+                },
+                {
+                    "operator_name": "sem_filter",
+                    "parameters": {
+                        "columns": [
+                            [
+                                "title",
+                                "body",
+                                "tags",
+                                "comments",
+                                "answers"
+                            ]
+                        ],
+                        "condition": "Keep questions that report query performance issues in their content."
+                    }
+                },
+                {
+                    "operator_name": "sem_map",
+                    "parameters": {
+                        "columns": [],
+                        "map_description": "Dimension representing reported causes of performance problems, capturing descriptions and reasons behind performance issues.",
+                        "keyword": "reported_causes"
+                    }
+                },
+                {
+                    "operator_name": "sem_group",
+                    "parameters": {
+                        "columns": [
+                            "reported_causes"
+                        ],
+                        "group_description": "group into granularity cause_category",
+                        "keyword": "cause_category"
+                    }
+                },
+                {
+                    "operator_name": "count",
+                    "parameters": {
+                        "group_by": "cause_category",
+                        "columns": []
+                    }
+                },
+                {
+                    "operator_name": "num_topk",
+                    "parameters": {
+                        "column": "count_of_cause_category",
+                        "k": 1,
+                        "order": "desc"
+                    }
+                }
+            ]
+        }
+    },
+    {
+        "id": 6,
+        "Q1": {
+            "Query_Self_Contained": "Find questions where the user discusses or uses SQL JOIN operations from 2009 to 2010.",
+            "plan": [
+                {
+                    "operator_name": "sem_filter",
+                    "parameters": {
+                        "columns": [
+                            [
+                                "creation_date"
+                            ]
+                        ],
+                        "condition": "Questions created from the year 2009 to 2010"
+                    }
+                },
+                {
+                    "operator_name": "sem_filter",
+                    "parameters": {
+                        "columns": [
+                            [
+                                "title",
+                                "body",
+                                "tags",
+                                "answers"
+                            ]
+                        ],
+                        "condition": "Content contains references to SQL JOIN operations"
+                    }
+                }
+            ]
+        },
+        "Q2": {
+            "Query_Self_Contained": "From questions involving SQL JOIN operations from 2009 to 2010, filter those that show misunderstandings in how JOIN is used.",
+            "plan": [
+                {
+                    "operator_name": "sem_filter",
+                    "parameters": {
+                        "columns": [
+                            [
+                                "creation_date"
+                            ]
+                        ],
+                        "condition": "Questions created from the year 2009 to 2010"
+                    }
+                },
+                {
+                    "operator_name": "sem_filter",
+                    "parameters": {
+                        "columns": [
+                            [
+                                "title",
+                                "body",
+                                "tags",
+                                "answers"
+                            ]
+                        ],
+                        "condition": "Content contains references to SQL JOIN operations"
+                    }
+                },
+                {
+                    "operator_name": "sem_filter",
+                    "parameters": {
+                        "columns": [
+                            [
+                                "title",
+                                "body",
+                                "tags",
+                                "comments",
+                                "answers"
+                            ]
+                        ],
+                        "condition": "Retain content that highlights misunderstandings in the use of SQL JOIN"
+                    }
+                }
+            ]
+        },
+        "Q3": {
+            "Query_Self_Contained": "From questions involving SQL JOIN operations from 2009 to 2010 that show misunderstandings in how JOIN is used, extract the specific issues that are reported or implied.",
+            "plan": [
+                {
+                    "operator_name": "sem_filter",
+                    "parameters": {
+                        "columns": [
+                            [
+                                "creation_date"
+                            ]
+                        ],
+                        "condition": "Questions created from the year 2009 to 2010"
+                    }
+                },
+                {
+                    "operator_name": "sem_filter",
+                    "parameters": {
+                        "columns": [
+                            [
+                                "title",
+                                "body",
+                                "tags",
+                                "answers"
+                            ]
+                        ],
+                        "condition": "Content contains references to SQL JOIN operations"
+                    }
+                },
+                {
+                    "operator_name": "sem_filter",
+                    "parameters": {
+                        "columns": [
+                            [
+                                "title",
+                                "body",
+                                "tags",
+                                "comments",
+                                "answers"
+                            ]
+                        ],
+                        "condition": "Retain content that highlights misunderstandings in the use of SQL JOIN"
+                    }
+                },
+                {
+                    "operator_name": "sem_map",
+                    "parameters": {
+                        "columns": [],
+                        "map_description": "This dimension captures the specific issues reported or implied in queries, such as defects, challenges, and other concerns.",
+                        "keyword": "specific_issues"
+                    }
+                }
+            ]
+        },
+        "Q4": {
+            "Query_Self_Contained": "From questions involving SQL JOIN operations from 2009 to 2010 that show misunderstandings in how JOIN is used, extract and group the issues into issue categories and identify the most frequently occurring types.",
+            "plan": [
+                {
+                    "operator_name": "sem_filter",
+                    "parameters": {
+                        "columns": [
+                            [
+                                "creation_date"
+                            ]
+                        ],
+                        "condition": "Questions created from the year 2009 to 2010"
+                    }
+                },
+                {
+                    "operator_name": "sem_filter",
+                    "parameters": {
+                        "columns": [
+                            [
+                                "title",
+                                "body",
+                                "tags",
+                                "answers"
+                            ]
+                        ],
+                        "condition": "Content contains references to SQL JOIN operations"
+                    }
+                },
+                {
+                    "operator_name": "sem_filter",
+                    "parameters": {
+                        "columns": [
+                            [
+                                "title",
+                                "body",
+                                "tags",
+                                "comments",
+                                "answers"
+                            ]
+                        ],
+                        "condition": "Retain content that highlights misunderstandings in the use of SQL JOIN"
+                    }
+                },
+                {
+                    "operator_name": "sem_map",
+                    "parameters": {
+                        "columns": [],
+                        "map_description": "This dimension captures the specific issues reported or implied in queries, such as defects, challenges, and other concerns.",
+                        "keyword": "specific_issues"
+                    }
+                },
+                {
+                    "operator_name": "sem_group",
+                    "parameters": {
+                        "columns": [
+                            "specific_issues"
+                        ],
+                        "group_description": "group into granularity issue_categories",
+                        "keyword": "issue_categories"
+                    }
+                },
+                {
+                    "operator_name": "count",
+                    "parameters": {
+                        "group_by": "issue_categories",
+                        "columns": []
+                    }
+                },
+                {
+                    "operator_name": "num_topk",
+                    "parameters": {
+                        "column": "count_of_issue_categories",
+                        "k": 1,
+                        "order": "desc"
+                    }
+                }
+            ]
+        }
+    },
+    {
+        "id": 7,
+        "Q1": {
+            "Query_Self_Contained": "Find 2014 questions about transactions that show confusion or misunderstanding.",
+            "plan": [
+                {
+                    "operator_name": "sem_filter",
+                    "parameters": {
+                        "columns": [
+                            [
+                                "creation_date"
+                            ]
+                        ],
+                        "condition": "Questions created in the year 2014"
+                    }
+                },
+                {
+                    "operator_name": "sem_filter",
+                    "parameters": {
+                        "columns": [
+                            [
+                                "title",
+                                "body",
+                                "tags",
+                                "comments",
+                                "answers"
+                            ]
+                        ],
+                        "condition": "Questions that include the concept of transactions, and Questions exhibiting expressions of confusion or misunderstanding"
+                    }
+                }
+            ]
+        },
+        "Q2": {
+            "Query_Self_Contained": "From 2014 questions about transactions that show confusion or misunderstanding, what specific areas of confusion are mentioned in these questions?",
+            "plan": [
+                {
+                    "operator_name": "sem_filter",
+                    "parameters": {
+                        "columns": [
+                            [
+                                "creation_date"
+                            ]
+                        ],
+                        "condition": "Questions created in the year 2014"
+                    }
+                },
+                {
+                    "operator_name": "sem_filter",
+                    "parameters": {
+                        "columns": [
+                            [
+                                "title",
+                                "body",
+                                "tags",
+                                "comments",
+                                "answers"
+                            ]
+                        ],
+                        "condition": "Questions that include the concept of transactions, and Questions exhibiting expressions of confusion or misunderstanding"
+                    }
+                },
+                {
+                    "operator_name": "sem_map",
+                    "parameters": {
+                        "columns": [],
+                        "map_description": "A dimension specifically identifying areas of confusion mentioned within question content.",
+                        "keyword": "confusion_areas"
+                    }
+                }
+            ]
+        },
+        "Q3": {
+            "Query_Self_Contained": "From 2014 questions about transactions that show confusion or misunderstanding, group the areas of confusion into confusion area categories.",
+            "plan": [
+                {
+                    "operator_name": "sem_filter",
+                    "parameters": {
+                        "columns": [
+                            [
+                                "creation_date"
+                            ]
+                        ],
+                        "condition": "Questions created in the year 2014"
+                    }
+                },
+                {
+                    "operator_name": "sem_filter",
+                    "parameters": {
+                        "columns": [
+                            [
+                                "title",
+                                "body",
+                                "tags",
+                                "comments",
+                                "answers"
+                            ]
+                        ],
+                        "condition": "Questions that include the concept of transactions, and Questions exhibiting expressions of confusion or misunderstanding"
+                    }
+                },
+                {
+                    "operator_name": "sem_map",
+                    "parameters": {
+                        "columns": [],
+                        "map_description": "A dimension specifically identifying areas of confusion mentioned within question content.",
+                        "keyword": "confusion_areas"
+                    }
+                },
+                {
+                    "operator_name": "sem_group",
+                    "parameters": {
+                        "columns": [
+                            "confusion_areas"
+                        ],
+                        "group_description": "group into granularity confusion area categories",
+                        "keyword": "confusion area categories"
+                    }
+                }
+            ]
+        },
+        "Q4": {
+            "Query_Self_Contained": "From 2014 questions about transactions that show confusion or misunderstanding, identify the most frequent confusion type about transactions.",
+            "plan": [
+                {
+                    "operator_name": "sem_filter",
+                    "parameters": {
+                        "columns": [
+                            [
+                                "creation_date"
+                            ]
+                        ],
+                        "condition": "Questions created in the year 2014"
+                    }
+                },
+                {
+                    "operator_name": "sem_filter",
+                    "parameters": {
+                        "columns": [
+                            [
+                                "title",
+                                "body",
+                                "tags",
+                                "comments",
+                                "answers"
+                            ]
+                        ],
+                        "condition": "Questions that include the concept of transactions, and Questions exhibiting expressions of confusion or misunderstanding"
+                    }
+                },
+                {
+                    "operator_name": "sem_map",
+                    "parameters": {
+                        "columns": [],
+                        "map_description": "A dimension specifically identifying areas of confusion mentioned within question content.",
+                        "keyword": "confusion_areas"
+                    }
+                },
+                {
+                    "operator_name": "sem_group",
+                    "parameters": {
+                        "columns": [
+                            "confusion_areas"
+                        ],
+                        "group_description": "group into granularity confusion area categories",
+                        "keyword": "confusion area categories"
+                    }
+                },
+                {
+                    "operator_name": "count",
+                    "parameters": {
+                        "group_by": "confusion area categories",
+                        "columns": []
+                    }
+                },
+                {
+                    "operator_name": "num_topk",
+                    "parameters": {
+                        "column": "count_of_confusion area categories",
+                        "k": 1,
+                        "order": "desc"
+                    }
+                }
+            ]
+        }
+    },
+    {
+        "id": 8,
+        "Q1": {
+            "Query_Self_Contained": "Find 2009 questions that contain confusion about SQL usage.",
+            "plan": [
+                {
+                    "operator_name": "sem_filter",
+                    "parameters": {
+                        "columns": [
+                            [
+                                "creation_date"
+                            ]
+                        ],
+                        "condition": "Questions created in the year 2009."
+                    }
+                },
+                {
+                    "operator_name": "sem_filter",
+                    "parameters": {
+                        "columns": [
+                            [
+                                "title",
+                                "body",
+                                "tags",
+                                "comments",
+                                "answers"
+                            ]
+                        ],
+                        "condition": "Questions with confusion about SQL usage."
+                    }
+                }
+            ]
+        },
+        "Q2": {
+            "Query_Self_Contained": "From 2009 questions that show confusion about SQL usage, identify the types of confusion mentioned or implied.",
+            "plan": [
+                {
+                    "operator_name": "sem_filter",
+                    "parameters": {
+                        "columns": [
+                            [
+                                "creation_date"
+                            ]
+                        ],
+                        "condition": "Questions created in the year 2009."
+                    }
+                },
+                {
+                    "operator_name": "sem_filter",
+                    "parameters": {
+                        "columns": [
+                            [
+                                "title",
+                                "body",
+                                "tags",
+                                "comments",
+                                "answers"
+                            ]
+                        ],
+                        "condition": "Questions with confusion about SQL usage."
+                    }
+                },
+                {
+                    "operator_name": "sem_map",
+                    "parameters": {
+                        "columns": [],
+                        "map_description": "This dimension identifies and categorizes the various types of confusion mentioned or implied in the data.",
+                        "keyword": "types_of_confusion"
+                    }
+                }
+            ]
+        },
+        "Q3": {
+            "Query_Self_Contained": "Filter questions with confusion about syntax_error from 2009 questions that show confusion about SQL usage, .",
+            "plan": [
+                {
+                    "operator_name": "sem_filter",
+                    "parameters": {
+                        "columns": [
+                            [
+                                "creation_date"
+                            ]
+                        ],
+                        "condition": "Questions created in the year 2009."
+                    }
+                },
+                {
+                    "operator_name": "sem_filter",
+                    "parameters": {
+                        "columns": [
+                            [
+                                "title",
+                                "body",
+                                "tags",
+                                "comments",
+                                "answers"
+                            ]
+                        ],
+                        "condition": "Questions with confusion about SQL usage."
+                    }
+                },
+                {
+                    "operator_name": "sem_map",
+                    "parameters": {
+                        "columns": [],
+                        "map_description": "This dimension identifies and categorizes the various types of confusion mentioned or implied in the data.",
+                        "keyword": "types_of_confusion"
+                    }
+                },
+                {
+                    "operator_name": "sem_filter",
+                    "parameters": {
+                        "columns": [
+                            "types_of_confusion"
+                        ],
+                        "condition": "Questions that contain confusion about syntax_error."
+                    }
+                }
+            ]
+        },
+        "Q4": {
+            "Query_Self_Contained": "From 2009 questions that show confusion about SQL usage, find questions with the most frequent confusion.",
+            "plan": [
+                {
+                    "operator_name": "sem_filter",
+                    "parameters": {
+                        "columns": [
+                            [
+                                "creation_date"
+                            ]
+                        ],
+                        "condition": "Questions created in the year 2009."
+                    }
+                },
+                {
+                    "operator_name": "sem_filter",
+                    "parameters": {
+                        "columns": [
+                            [
+                                "title",
+                                "body",
+                                "tags",
+                                "comments",
+                                "answers"
+                            ]
+                        ],
+                        "condition": "Questions with confusion about SQL usage."
+                    }
+                },
+                {
+                    "operator_name": "sem_map",
+                    "parameters": {
+                        "columns": [],
+                        "map_description": "This dimension identifies and categorizes the various types of confusion mentioned or implied in the data.",
+                        "keyword": "types_of_confusion"
+                    }
+                },
+                {
+                    "operator_name": "count",
+                    "parameters": {
+                        "group_by": "types_of_confusion",
+                        "columns": []
+                    }
+                },
+                {
+                    "operator_name": "sem_topk",
+                    "parameters": {
+                        "column": "types_of_confusion",
+                        "query": "most frequent confusion\n Order: desc",
+                        "k": 1
+                    }
+                }
+            ]
+        }
+    },
+    {
+        "id": 9,
+        "Q1": {
+            "Query_Self_Contained": "Find questions from 2015 that are related to SQL.",
+            "plan": [
+                {
+                    "operator_name": "sem_filter",
+                    "parameters": {
+                        "columns": [
+                            [
+                                "creation_date"
+                            ]
+                        ],
+                        "condition": "Keep only the content from the year 2015."
+                    }
+                },
+                {
+                    "operator_name": "sem_filter",
+                    "parameters": {
+                        "columns": [
+                            [
+                                "title",
+                                "body",
+                                "tags"
+                            ]
+                        ],
+                        "condition": "Retain content that is related to SQL."
+                    }
+                }
+            ]
+        },
+        "Q2": {
+            "Query_Self_Contained": "For questions from 2015 related to SQL, determine whether each question has at least one answer that offer a solution.",
+            "plan": [
+                {
+                    "operator_name": "sem_filter",
+                    "parameters": {
+                        "columns": [
+                            [
+                                "creation_date"
+                            ]
+                        ],
+                        "condition": "Keep only the content from the year 2015."
+                    }
+                },
+                {
+                    "operator_name": "sem_filter",
+                    "parameters": {
+                        "columns": [
+                            [
+                                "title",
+                                "body",
+                                "tags"
+                            ]
+                        ],
+                        "condition": "Retain content that is related to SQL."
+                    }
+                },
+                {
+                    "operator_name": "sem_map",
+                    "parameters": {
+                        "columns": [],
+                        "map_description": "A dimension that represents whether an answer offers a concrete solution or not.",
+                        "keyword": "answer_solution_status"
+                    }
+                },
+                {
+                    "operator_name": "count",
+                    "parameters": {
+                        "group_by": "answer_solution_status",
+                        "columns": []
+                    }
+                }
+            ]
+        },
+        "Q3": {
+            "Query_Self_Contained": "For questions from 2015 related to SQL, identify the concepts involved in each question.",
+            "plan": [
+                {
+                    "operator_name": "sem_filter",
+                    "parameters": {
+                        "columns": [
+                            [
+                                "creation_date"
+                            ]
+                        ],
+                        "condition": "Keep only the content from the year 2015."
+                    }
+                },
+                {
+                    "operator_name": "sem_filter",
+                    "parameters": {
+                        "columns": [
+                            [
+                                "title",
+                                "body",
+                                "tags"
+                            ]
+                        ],
+                        "condition": "Retain content that is related to SQL."
+                    }
+                },
+                {
+                    "operator_name": "sem_map",
+                    "parameters": {
+                        "columns": [],
+                        "map_description": "A dimension to identify and store the concepts involved in each question, extracted from its title, body, and tags.",
+                        "keyword": "concepts"
+                    }
+                }
+            ]
+        },
+        "Q4": {
+            "Query_Self_Contained": "For questions from 2015 related to SQL, classify the identified concepts into concept categories and analyze the answered status according to it.",
+            "plan": [
+                {
+                    "operator_name": "sem_filter",
+                    "parameters": {
+                        "columns": [
+                            [
+                                "creation_date"
+                            ]
+                        ],
+                        "condition": "Keep only the content from the year 2015."
+                    }
+                },
+                {
+                    "operator_name": "sem_filter",
+                    "parameters": {
+                        "columns": [
+                            [
+                                "title",
+                                "body",
+                                "tags"
+                            ]
+                        ],
+                        "condition": "Retain content that is related to SQL."
+                    }
+                },
+                {
+                    "operator_name": "sem_map",
+                    "parameters": {
+                        "columns": [],
+                        "map_description": "A dimension to identify and store the concepts involved in each question, extracted from its title, body, and tags.",
+                        "keyword": "concepts"
+                    }
+                },
+                {
+                    "operator_name": "sem_group",
+                    "parameters": {
+                        "columns": [
+                            "concepts"
+                        ],
+                        "group_description": "group into granularity concept_categories",
+                        "keyword": "concept_categories"
+                    }
+                },
+                {
+                    "operator_name": "sem_map",
+                    "parameters": {
+                        "columns": [],
+                        "map_description": "A dimension that represents whether an answer offers a concrete solution or not.",
+                        "keyword": "answer_solution_status"
+                    }
+                },
+                {
+                    "operator_name": "sem_reduce",
+                    "parameters": {
+                        "columns": [
+                            "answer_solution_status"
+                        ],
+                        "group_by": "concept_categories"
+                    }
+                }
+            ]
+        }
+    },
+    {
+        "id": 10,
+        "Q1": {
+            "Query_Self_Contained": "Find questions from 2011 that are related to SQL.",
+            "plan": [
+                {
+                    "operator_name": "sem_filter",
+                    "parameters": {
+                        "columns": [
+                            [
+                                "creation_date"
+                            ]
+                        ],
+                        "condition": "Keep questions with a creation date in 2011."
+                    }
+                },
+                {
+                    "operator_name": "sem_filter",
+                    "parameters": {
+                        "columns": [
+                            [
+                                "title",
+                                "body",
+                                "tags"
+                            ]
+                        ],
+                        "condition": "Keep questions related to SQL."
+                    }
+                }
+            ]
+        },
+        "Q2": {
+            "Query_Self_Contained": "From 2011 SQL-related questions, filter answers with more than one opinion.",
+            "plan": [
+                {
+                    "operator_name": "sem_filter",
+                    "parameters": {
+                        "columns": [
+                            [
+                                "creation_date"
+                            ]
+                        ],
+                        "condition": "Keep questions with a creation date in 2011."
+                    }
+                },
+                {
+                    "operator_name": "sem_filter",
+                    "parameters": {
+                        "columns": [
+                            [
+                                "title",
+                                "body",
+                                "tags"
+                            ]
+                        ],
+                        "condition": "Keep questions related to SQL."
+                    }
+                },
+                {
+                    "operator_name": "sem_filter",
+                    "parameters": {
+                        "columns": [
+                            "answers"
+                        ],
+                        "condition": "Keep answers that have more than one opinion."
+                    }
+                }
+            ]
+        },
+        "Q3": {
+            "Query_Self_Contained": "From 2011 SQL-related questions with more than one opinion, recognize the number of different opinions.",
+            "plan": [
+                {
+                    "operator_name": "sem_filter",
+                    "parameters": {
+                        "columns": [
+                            [
+                                "creation_date"
+                            ]
+                        ],
+                        "condition": "Keep questions with a creation date in 2011."
+                    }
+                },
+                {
+                    "operator_name": "sem_filter",
+                    "parameters": {
+                        "columns": [
+                            [
+                                "title",
+                                "body",
+                                "tags"
+                            ]
+                        ],
+                        "condition": "Keep questions related to SQL."
+                    }
+                },
+                {
+                    "operator_name": "sem_filter",
+                    "parameters": {
+                        "columns": [
+                            [
+                                "comments",
+                                "answers"
+                            ]
+                        ],
+                        "condition": "Retain only questions that have multiple opinions or discussions."
+                    }
+                },
+                {
+                    "operator_name": "sem_map",
+                    "parameters": {
+                        "columns": [],
+                        "map_description": "A dimension to categorize comments into distinct opinion types, helping to recognize the number of different opinions.",
+                        "keyword": "opinion_type"
+                    }
+                },
+                {
+                    "operator_name": "count",
+                    "parameters": {
+                        "group_by": "opinion_type",
+                        "columns": []
+                    }
+                }
+            ]
+        },
+        "Q4": {
+            "Query_Self_Contained": "From questions from 2011 related to SQL answers with more than one opinion, find top 5 ones that have the highest number of distinct opinions.",
+            "plan": [
+                {
+                    "operator_name": "sem_filter",
+                    "parameters": {
+                        "columns": [
+                            [
+                                "creation_date"
+                            ]
+                        ],
+                        "condition": "Keep questions with a creation date in 2011."
+                    }
+                },
+                {
+                    "operator_name": "sem_filter",
+                    "parameters": {
+                        "columns": [
+                            [
+                                "title",
+                                "body",
+                                "tags"
+                            ]
+                        ],
+                        "condition": "Keep questions related to SQL."
+                    }
+                },
+                {
+                    "operator_name": "sem_filter",
+                    "parameters": {
+                        "columns": [
+                            "answers"
+                        ],
+                        "condition": "Keep answers that have more than one opinion."
+                    }
+                },
+                {
+                    "operator_name": "sem_map",
+                    "parameters": {
+                        "columns": [],
+                        "map_description": "A dimension to categorize comments into distinct opinion types, helping to recognize the number of different opinions.",
+                        "keyword": "opinion_type"
+                    }
+                },
+                {
+                    "operator_name": "num_topk",
+                    "parameters": {
+                        "column": "opinion_type",
+                        "k": 5,
+                        "order": "desc"
+                    }
+                }
+            ]
+        }
+    },
+    {
+        "id": 11,
+        "Q1": {
+            "Query_Self_Contained": "Please find questions from 2015 that related to PostgreSQL transaction",
+            "plan": [
+                {
+                    "operator_name": "sem_filter",
+                    "parameters": {
+                        "columns": [
+                            [
+                                "creation_date"
+                            ]
+                        ],
+                        "condition": "Keep questions that were created in the year 2015"
+                    }
+                },
+                {
+                    "operator_name": "sem_filter",
+                    "parameters": {
+                        "columns": [
+                            [
+                                "title",
+                                "body",
+                                "tags",
+                                "comments",
+                                "answers"
+                            ]
+                        ],
+                        "condition": "Keep questions that relate to PostgreSQL transaction topics"
+                    }
+                }
+            ]
+        },
+        "Q2": {
+            "Query_Self_Contained": "From 2015 questions related to PostgreSQL transaction, what are the error scenarios?",
+            "plan": [
+                {
+                    "operator_name": "sem_filter",
+                    "parameters": {
+                        "columns": [
+                            [
+                                "creation_date"
+                            ]
+                        ],
+                        "condition": "Keep questions that were created in the year 2015"
+                    }
+                },
+                {
+                    "operator_name": "sem_filter",
+                    "parameters": {
+                        "columns": [
+                            [
+                                "title",
+                                "body",
+                                "tags",
+                                "comments",
+                                "answers"
+                            ]
+                        ],
+                        "condition": "Keep questions that relate to PostgreSQL transaction topics"
+                    }
+                },
+                {
+                    "operator_name": "sem_map",
+                    "parameters": {
+                        "columns": [],
+                        "map_description": "This dimension captures different error scenarios associated with the data records.",
+                        "keyword": "error_scenarios"
+                    }
+                }
+            ]
+        },
+        "Q3": {
+            "Query_Self_Contained": "Find 2015 questions related to PostgreSQL transaction and with a score higher than 0.",
+            "plan": [
+                {
+                    "operator_name": "sem_filter",
+                    "parameters": {
+                        "columns": [
+                            [
+                                "creation_date"
+                            ]
+                        ],
+                        "condition": "Keep questions that were created in the year 2015"
+                    }
+                },
+                {
+                    "operator_name": "sem_filter",
+                    "parameters": {
+                        "columns": [
+                            [
+                                "title",
+                                "body",
+                                "tags",
+                                "comments",
+                                "answers"
+                            ]
+                        ],
+                        "condition": "Keep questions that relate to PostgreSQL transaction topics"
+                    }
+                },
+                {
+                    "operator_name": "num_filter",
+                    "parameters": {
+                        "conditions": [
+                            {
+                                "column": "score",
+                                "threshold": 0,
+                                "operator": ">"
+                            }
+                        ]
+                    }
+                }
+            ]
+        },
+        "Q4": {
+            "Query_Self_Contained": "From 2015 questions related to PostgreSQL transaction and with a score higher than 0, first find the type of the errors, and find the 3 most frequent ones.",
+            "plan": [
+                {
+                    "operator_name": "sem_filter",
+                    "parameters": {
+                        "columns": [
+                            [
+                                "creation_date"
+                            ]
+                        ],
+                        "condition": "Keep questions that were created in the year 2015"
+                    }
+                },
+                {
+                    "operator_name": "sem_filter",
+                    "parameters": {
+                        "columns": [
+                            [
+                                "title",
+                                "body",
+                                "tags",
+                                "comments",
+                                "answers"
+                            ]
+                        ],
+                        "condition": "Keep questions that relate to PostgreSQL transaction topics"
+                    }
+                },
+                {
+                    "operator_name": "num_filter",
+                    "parameters": {
+                        "conditions": [
+                            {
+                                "column": "score",
+                                "threshold": 0,
+                                "operator": ">"
+                            }
+                        ]
+                    }
+                },
+                {
+                    "operator_name": "sem_map",
+                    "parameters": {
+                        "columns": [],
+                        "map_description": "A dimension to capture the type of errors encountered in the data.",
+                        "keyword": "error_type"
+                    }
+                },
+                {
+                    "operator_name": "count",
+                    "parameters": {
+                        "group_by": "error_type",
+                        "columns": []
+                    }
+                },
+                {
+                    "operator_name": "sem_topk",
+                    "parameters": {
+                        "column": "error_type",
+                        "query": "most frequent errors\n Order: desc",
+                        "k": 3
+                    }
+                }
+            ]
+        }
+    },
+    {
+        "id": 12,
+        "Q1": {
+            "Query_Self_Contained": "Find 2015 questions that contains MySQL in tags",
+            "plan": [
+                {
+                    "operator_name": "keyword_filter",
+                    "parameters": {
+                        "columns": [
+                            "tags"
+                        ],
+                        "keywords": [
+                            [
+                                "MySQL"
+                            ]
+                        ],
+                        "logic": "or",
+                        "relation": "contains"
+                    }
+                },
+                {
+                    "operator_name": "sem_filter",
+                    "parameters": {
+                        "columns": [
+                            [
+                                "creation_date"
+                            ]
+                        ],
+                        "condition": "Keep questions created in 2015."
+                    }
+                }
+            ]
+        },
+        "Q2": {
+            "Query_Self_Contained": "For 2015 questions that contains MySQL in tags, what are the problems of them?",
+            "plan": [
+                {
+                    "operator_name": "keyword_filter",
+                    "parameters": {
+                        "columns": [
+                            "tags"
+                        ],
+                        "keywords": [
+                            [
+                                "MySQL"
+                            ]
+                        ],
+                        "logic": "or",
+                        "relation": "contains"
+                    }
+                },
+                {
+                    "operator_name": "sem_filter",
+                    "parameters": {
+                        "columns": [
+                            [
+                                "creation_date"
+                            ]
+                        ],
+                        "condition": "Keep questions created in 2015."
+                    }
+                },
+                {
+                    "operator_name": "sem_map",
+                    "parameters": {
+                        "columns": [],
+                        "map_description": "A dimension dedicated to identifying and categorizing problems associated with each record.",
+                        "keyword": "problems"
+                    }
+                }
+            ]
+        },
+        "Q3": {
+            "Query_Self_Contained": "For 2015 questions that contains MySQL in tags, determine whether the problem is solved in the answers",
+            "plan": [
+                {
+                    "operator_name": "keyword_filter",
+                    "parameters": {
+                        "columns": [
+                            "tags"
+                        ],
+                        "keywords": [
+                            [
+                                "MySQL"
+                            ]
+                        ],
+                        "logic": "or",
+                        "relation": "contains"
+                    }
+                },
+                {
+                    "operator_name": "sem_filter",
+                    "parameters": {
+                        "columns": [
+                            [
+                                "creation_date"
+                            ]
+                        ],
+                        "condition": "Keep questions created in 2015."
+                    }
+                },
+                {
+                    "operator_name": "sem_map",
+                    "parameters": {
+                        "columns": [],
+                        "map_description": "A dimension to indicate whether a problem described in the answers is solved.",
+                        "keyword": "problem_status"
+                    }
+                }
+            ]
+        },
+        "Q4": {
+            "Query_Self_Contained": "For 2015 questions that contains MySQL in tags, for each problem category, analyze its resolution rate.",
+            "plan": [
+                {
+                    "operator_name": "keyword_filter",
+                    "parameters": {
+                        "columns": [
+                            "tags"
+                        ],
+                        "keywords": [
+                            [
+                                "MySQL"
+                            ]
+                        ],
+                        "logic": "or",
+                        "relation": "contains"
+                    }
+                },
+                {
+                    "operator_name": "sem_filter",
+                    "parameters": {
+                        "columns": [
+                            [
+                                "creation_date"
+                            ]
+                        ],
+                        "condition": "Keep questions created in 2015."
+                    }
+                },
+                {
+                    "operator_name": "sem_map",
+                    "parameters": {
+                        "columns": [],
+                        "map_description": "A dimension dedicated to identifying and categorizing problems associated with each record.",
+                        "keyword": "problems"
+                    }
+                },
+                {
+                    "operator_name": "sem_group",
+                    "parameters": {
+                        "columns": [
+                            "problems"
+                        ],
+                        "group_description": "group into granularity Problem Category",
+                        "keyword": "Problem Category"
+                    }
+                },
+                {
+                    "operator_name": "sem_map",
+                    "parameters": {
+                        "columns": [],
+                        "map_description": "A dimension to indicate whether a problem described in the answers is solved.",
+                        "keyword": "problem_status"
+                    }
+                },
+                {
+                    "operator_name": "sem_reduce",
+                    "parameters": {
+                        "columns": [
+                            "problem_status"
+                        ],
+                        "group_by": "Problem Category"
+                    }
+                }
+            ]
+        }
+    },
+    {
+        "id": 13,
+        "Q1": {
+            "Query_Self_Contained": "Find questions from January to August 2010 that reported errors.",
+            "plan": [
+                {
+                    "operator_name": "sem_filter",
+                    "parameters": {
+                        "columns": [
+                            [
+                                "creation_date"
+                            ]
+                        ],
+                        "condition": "Keep questions created between January 1, 2010, and August 31, 2010."
+                    }
+                },
+                {
+                    "operator_name": "sem_filter",
+                    "parameters": {
+                        "columns": [
+                            [
+                                "title",
+                                "body",
+                                "tags"
+                            ]
+                        ],
+                        "condition": "Keep questions that mention reporting errors."
+                    }
+                }
+            ]
+        },
+        "Q2": {
+            "Query_Self_Contained": "From questions from January to August 2010 that reported errors, extract the errors of each question",
+            "plan": [
+                {
+                    "operator_name": "sem_filter",
+                    "parameters": {
+                        "columns": [
+                            [
+                                "creation_date"
+                            ]
+                        ],
+                        "condition": "Keep questions created between January 1, 2010, and August 31, 2010."
+                    }
+                },
+                {
+                    "operator_name": "sem_filter",
+                    "parameters": {
+                        "columns": [
+                            [
+                                "title",
+                                "body",
+                                "tags"
+                            ]
+                        ],
+                        "condition": "Keep questions that mention reporting errors."
+                    }
+                },
+                {
+                    "operator_name": "sem_map",
+                    "parameters": {
+                        "columns": [],
+                        "map_description": "This dimension represents the errors associated with each question.",
+                        "keyword": "errors"
+                    }
+                }
+            ]
+        },
+        "Q3": {
+            "Query_Self_Contained": "From questions from January to August 2010 that reported errors, extract specific solution for the question from answers if possible.",
+            "plan": [
+                {
+                    "operator_name": "sem_filter",
+                    "parameters": {
+                        "columns": [
+                            [
+                                "creation_date"
+                            ]
+                        ],
+                        "condition": "Keep questions created between January 1, 2010, and August 31, 2010."
+                    }
+                },
+                {
+                    "operator_name": "sem_filter",
+                    "parameters": {
+                        "columns": [
+                            [
+                                "title",
+                                "body",
+                                "tags"
+                            ]
+                        ],
+                        "condition": "Keep questions that mention reporting errors."
+                    }
+                }
+            ]
+        },
+        "Q4": {
+            "Query_Self_Contained": "From questions between Jan and Aug 2010 that reported errors, for each error category, summary how it can be addressed.",
+            "plan": [
+                {
+                    "operator_name": "sem_filter",
+                    "parameters": {
+                        "columns": [
+                            [
+                                "creation_date"
+                            ]
+                        ],
+                        "condition": "Keep questions created between January 1, 2010, and August 31, 2010."
+                    }
+                },
+                {
+                    "operator_name": "sem_filter",
+                    "parameters": {
+                        "columns": [
+                            [
+                                "title",
+                                "body",
+                                "tags"
+                            ]
+                        ],
+                        "condition": "Keep questions that mention reporting errors."
+                    }
+                },
+                {
+                    "operator_name": "sem_map",
+                    "parameters": {
+                        "columns": [],
+                        "map_description": "This dimension represents the errors associated with each question.",
+                        "keyword": "errors"
+                    }
+                }
+            ]
+        }
+    },
+    {
+        "id": 14,
+        "Q1": {
+            "Query_Self_Contained": "Find MySQL-tagged questions in 2009.",
+            "plan": [
+                {
+                    "operator_name": "keyword_filter",
+                    "parameters": {
+                        "columns": [
+                            "tags"
+                        ],
+                        "keywords": [
+                            [
+                                "MySQL"
+                            ]
+                        ],
+                        "logic": "or",
+                        "relation": "contains"
+                    }
+                },
+                {
+                    "operator_name": "sem_filter",
+                    "parameters": {
+                        "columns": [
+                            [
+                                "creation_date"
+                            ]
+                        ],
+                        "condition": "Retain questions created in the year 2009."
+                    }
+                }
+            ]
+        },
+        "Q2": {
+            "Query_Self_Contained": "How many question types are there in the MySQL-tagged questions in 2009.",
+            "plan": [
+                {
+                    "operator_name": "keyword_filter",
+                    "parameters": {
+                        "columns": [
+                            "tags"
+                        ],
+                        "keywords": [
+                            [
+                                "MySQL"
+                            ]
+                        ],
+                        "logic": "or",
+                        "relation": "contains"
+                    }
+                },
+                {
+                    "operator_name": "sem_filter",
+                    "parameters": {
+                        "columns": [
+                            [
+                                "creation_date"
+                            ]
+                        ],
+                        "condition": "Retain questions created in the year 2009."
+                    }
+                },
+                {
+                    "operator_name": "sem_map",
+                    "parameters": {
+                        "columns": [],
+                        "map_description": "A new dimension representing different types of questions for classification and analysis.",
+                        "keyword": "question_type"
+                    }
+                }
+            ]
+        },
+        "Q3": {
+            "Query_Self_Contained": "In the MySQL-tagged questions in 2009, find the most frequent type of questions",
+            "plan": [
+                {
+                    "operator_name": "keyword_filter",
+                    "parameters": {
+                        "columns": [
+                            "tags"
+                        ],
+                        "keywords": [
+                            [
+                                "MySQL"
+                            ]
+                        ],
+                        "logic": "or",
+                        "relation": "contains"
+                    }
+                },
+                {
+                    "operator_name": "sem_filter",
+                    "parameters": {
+                        "columns": [
+                            [
+                                "creation_date"
+                            ]
+                        ],
+                        "condition": "Retain questions created in the year 2009."
+                    }
+                },
+                {
+                    "operator_name": "sem_map",
+                    "parameters": {
+                        "columns": [],
+                        "map_description": "A new dimension representing different types of questions for classification and analysis.",
+                        "keyword": "question_type"
+                    }
+                },
+                {
+                    "operator_name": "sem_topk",
+                    "parameters": {
+                        "column": "question_type",
+                        "query": "most frequent type of questions\n Order: desc",
+                        "k": 1
+                    }
+                }
+            ]
+        },
+        "Q4": {
+            "Query_Self_Contained": "In the MySQL-tagged questions in 2009, identify the type of problem that you think is most serious",
+            "plan": [
+                {
+                    "operator_name": "keyword_filter",
+                    "parameters": {
+                        "columns": [
+                            "tags"
+                        ],
+                        "keywords": [
+                            [
+                                "MySQL"
+                            ]
+                        ],
+                        "logic": "or",
+                        "relation": "contains"
+                    }
+                },
+                {
+                    "operator_name": "sem_filter",
+                    "parameters": {
+                        "columns": [
+                            [
+                                "creation_date"
+                            ]
+                        ],
+                        "condition": "Retain questions created in the year 2009."
+                    }
+                },
+                {
+                    "operator_name": "sem_map",
+                    "parameters": {
+                        "columns": [],
+                        "map_description": "A new dimension representing different types of questions for classification and analysis.",
+                        "keyword": "question_type"
+                    }
+                },
+                {
+                    "operator_name": "sem_reduce",
+                    "parameters": {
+                        "columns": [
+                            "score"
+                        ],
+                        "group_by": "question_type"
+                    }
+                },
+                {
+                    "operator_name": "sem_topk",
+                    "parameters": {
+                        "column": "title",
+                        "query": "seriousness of the problem as expressed in the title\n Order: desc",
+                        "k": 1
+                    }
+                }
+            ]
+        }
+    },
+    {
+        "id": 15,
+        "Q1": {
+            "Query_Self_Contained": "Find the database usage related question from 2015.06 to 2015.11",
+            "plan": [
+                {
+                    "operator_name": "sem_filter",
+                    "parameters": {
+                        "columns": [
+                            [
+                                "creation_date"
+                            ]
+                        ],
+                        "condition": "Select entries with a creation date between 2015.06 and 2015.11"
+                    }
+                },
+                {
+                    "operator_name": "sem_filter",
+                    "parameters": {
+                        "columns": [
+                            [
+                                "title",
+                                "body",
+                                "tags"
+                            ]
+                        ],
+                        "condition": "Keep only questions that include topics or terms related to 'database usage'"
+                    }
+                }
+            ]
+        },
+        "Q2": {
+            "Query_Self_Contained": "Find the database usage related question from 2015.06 to 2015.10",
+            "plan": [
+                {
+                    "operator_name": "sem_filter",
+                    "parameters": {
+                        "columns": [
+                            [
+                                "creation_date"
+                            ]
+                        ],
+                        "condition": "Select entries with a creation date between 2015.06 and 2015.11"
+                    }
+                },
+                {
+                    "operator_name": "sem_filter",
+                    "parameters": {
+                        "columns": [
+                            [
+                                "title",
+                                "body",
+                                "tags"
+                            ]
+                        ],
+                        "condition": "Keep only questions that include topics or terms related to 'database usage'"
+                    }
+                },
+                {
+                    "operator_name": "sem_filter",
+                    "parameters": {
+                        "columns": [
+                            [
+                                "creation_date"
+                            ]
+                        ],
+                        "condition": "questions created on or before October 2015"
+                    }
+                }
+            ]
+        },
+        "Q3": {
+            "Query_Self_Contained": "Find the database usage related question from 2015.06 to 2015.10 with a score higher than 5",
+            "plan": [
+                {
+                    "operator_name": "sem_filter",
+                    "parameters": {
+                        "columns": [
+                            [
+                                "creation_date"
+                            ]
+                        ],
+                        "condition": "Select entries with a creation date between 2015.06 and 2015.11"
+                    }
+                },
+                {
+                    "operator_name": "sem_filter",
+                    "parameters": {
+                        "columns": [
+                            [
+                                "title",
+                                "body",
+                                "tags"
+                            ]
+                        ],
+                        "condition": "Keep only questions that include topics or terms related to 'database usage'"
+                    }
+                },
+                {
+                    "operator_name": "sem_filter",
+                    "parameters": {
+                        "columns": [
+                            [
+                                "creation_date"
+                            ]
+                        ],
+                        "condition": "questions created on or before October 2015"
+                    }
+                },
+                {
+                    "operator_name": "num_filter",
+                    "parameters": {
+                        "conditions": [
+                            {
+                                "column": "score",
+                                "threshold": 5,
+                                "operator": ">"
+                            }
+                        ]
+                    }
+                }
+            ]
+        },
+        "Q4": {
+            "Query_Self_Contained": "Find the database usage related question from 2015.06 to 2015.10 with a score higher than 5 and related to errors",
+            "plan": [
+                {
+                    "operator_name": "sem_filter",
+                    "parameters": {
+                        "columns": [
+                            [
+                                "creation_date"
+                            ]
+                        ],
+                        "condition": "Select entries with a creation date between 2015.06 and 2015.11"
+                    }
+                },
+                {
+                    "operator_name": "sem_filter",
+                    "parameters": {
+                        "columns": [
+                            [
+                                "title",
+                                "body",
+                                "tags"
+                            ]
+                        ],
+                        "condition": "Keep only questions that include topics or terms related to 'database usage'"
+                    }
+                },
+                {
+                    "operator_name": "sem_filter",
+                    "parameters": {
+                        "columns": [
+                            [
+                                "creation_date"
+                            ]
+                        ],
+                        "condition": "questions created on or before October 2015"
+                    }
+                },
+                {
+                    "operator_name": "num_filter",
+                    "parameters": {
+                        "conditions": [
+                            {
+                                "column": "score",
+                                "threshold": 5,
+                                "operator": ">"
+                            }
+                        ]
+                    }
+                },
+                {
+                    "operator_name": "sem_filter",
+                    "parameters": {
+                        "columns": [
+                            [
+                                "title",
+                                "body",
+                                "tags",
+                                "comments",
+                                "answers"
+                            ]
+                        ],
+                        "condition": "Keep questions that mention errors"
+                    }
+                }
+            ]
+        }
+    },
+    {
+        "id": 16,
+        "Q1": {
+            "Query_Self_Contained": "Find question with a score lower than 0 from 2015 year",
+            "plan": [
+                {
+                    "operator_name": "num_filter",
+                    "parameters": {
+                        "conditions": [
+                            {
+                                "column": "score",
+                                "threshold": 0,
+                                "operator": "<"
+                            }
+                        ]
+                    }
+                },
+                {
+                    "operator_name": "sem_filter",
+                    "parameters": {
+                        "columns": [
+                            [
+                                "creation_date"
+                            ]
+                        ],
+                        "condition": "Keep questions created in the year 2015"
+                    }
+                }
+            ]
+        },
+        "Q2": {
+            "Query_Self_Contained": "Find question with a score lower than 0 from 2015 year, extract the reason for their low quality",
+            "plan": [
+                {
+                    "operator_name": "num_filter",
+                    "parameters": {
+                        "conditions": [
+                            {
+                                "column": "score",
+                                "threshold": 0,
+                                "operator": "<"
+                            }
+                        ]
+                    }
+                },
+                {
+                    "operator_name": "sem_filter",
+                    "parameters": {
+                        "columns": [
+                            [
+                                "creation_date"
+                            ]
+                        ],
+                        "condition": "Keep questions created in the year 2015"
+                    }
+                },
+                {
+                    "operator_name": "sem_map",
+                    "parameters": {
+                        "columns": [],
+                        "map_description": "A dimension representing reasons for low quality in data entries.",
+                        "keyword": "quality_reason"
+                    }
+                }
+            ]
+        },
+        "Q3": {
+            "Query_Self_Contained": "Find question with a score lower than 0 from 2015 year, find the their topics.",
+            "plan": [
+                {
+                    "operator_name": "num_filter",
+                    "parameters": {
+                        "conditions": [
+                            {
+                                "column": "score",
+                                "threshold": 0,
+                                "operator": "<"
+                            }
+                        ]
+                    }
+                },
+                {
+                    "operator_name": "sem_filter",
+                    "parameters": {
+                        "columns": [
+                            [
+                                "creation_date"
+                            ]
+                        ],
+                        "condition": "Keep questions created in the year 2015"
+                    }
+                }
+            ]
+        },
+        "Q4": {
+            "Query_Self_Contained": "Find question with a score lower than 0 from 2015 year, organize the topic into topic categories and summary the low quality reason for each category",
+            "plan": [
+                {
+                    "operator_name": "num_filter",
+                    "parameters": {
+                        "conditions": [
+                            {
+                                "column": "score",
+                                "threshold": 0,
+                                "operator": "<"
+                            }
+                        ]
+                    }
+                },
+                {
+                    "operator_name": "sem_filter",
+                    "parameters": {
+                        "columns": [
+                            [
+                                "creation_date"
+                            ]
+                        ],
+                        "condition": "Keep questions created in the year 2015"
+                    }
+                },
+                {
+                    "operator_name": "sem_map",
+                    "parameters": {
+                        "columns": [],
+                        "map_description": "This dimension represents broader categories of topics by aggregating related tags into meaningful groupings.",
+                        "keyword": "topic_category"
+                    }
+                },
+                {
+                    "operator_name": "sem_map",
+                    "parameters": {
+                        "columns": [],
+                        "map_description": "A dimension representing reasons for low quality in data entries.",
+                        "keyword": "quality_reason"
+                    }
+                },
+                {
+                    "operator_name": "sem_reduce",
+                    "parameters": {
+                        "columns": [
+                            "quality_reason"
+                        ],
+                        "group_by": "topic_category"
+                    }
+                }
+            ]
+        }
+    },
+    {
+        "id": 17,
+        "Q1": {
+            "Query_Self_Contained": "Find the question contains 'redis' in their tags.",
+            "plan": [
+                {
+                    "operator_name": "keyword_filter",
+                    "parameters": {
+                        "columns": [
+                            "tags"
+                        ],
+                        "keywords": [
+                            [
+                                "redis"
+                            ]
+                        ],
+                        "logic": "or",
+                        "relation": "contained_in"
+                    }
+                }
+            ]
+        },
+        "Q2": {
+            "Query_Self_Contained": "Find the question contains 'redis' in their tags. Analyze how many times it appears each year",
+            "plan": [
+                {
+                    "operator_name": "keyword_filter",
+                    "parameters": {
+                        "columns": [
+                            "tags"
+                        ],
+                        "keywords": [
+                            [
+                                "redis"
+                            ]
+                        ],
+                        "logic": "or",
+                        "relation": "contained_in"
+                    }
+                },
+                {
+                    "operator_name": "sem_group",
+                    "parameters": {
+                        "columns": [
+                            "creation_date"
+                        ],
+                        "group_description": "group into granularity year",
+                        "keyword": "year"
+                    }
+                },
+                {
+                    "operator_name": "count",
+                    "parameters": {
+                        "group_by": "year",
+                        "columns": []
+                    }
+                }
+            ]
+        },
+        "Q3": {
+            "Query_Self_Contained": "Find the question contains 'redis' in their tags. Determine if they are encountering an error or asking for instructions.",
+            "plan": [
+                {
+                    "operator_name": "keyword_filter",
+                    "parameters": {
+                        "columns": [
+                            "tags"
+                        ],
+                        "keywords": [
+                            [
+                                "redis"
+                            ]
+                        ],
+                        "logic": "or",
+                        "relation": "contained_in"
+                    }
+                },
+                {
+                    "operator_name": "sem_map",
+                    "parameters": {
+                        "columns": [],
+                        "map_description": "A dimension that identifies whether a question is encountering an error or asking for instructions by analyzing the textual content of the 'body'.",
+                        "keyword": "question_purpose"
+                    }
+                }
+            ]
+        },
+        "Q4": {
+            "Query_Self_Contained": "Find the question contains 'redis' in their tags. What are they instruct about?",
+            "plan": [
+                {
+                    "operator_name": "keyword_filter",
+                    "parameters": {
+                        "columns": [
+                            "tags"
+                        ],
+                        "keywords": [
+                            [
+                                "redis"
+                            ]
+                        ],
+                        "logic": "or",
+                        "relation": "contained_in"
+                    }
+                },
+                {
+                    "operator_name": "sem_map",
+                    "parameters": {
+                        "columns": [],
+                        "map_description": "A dimension representing specific instructional topics or categories contained in the 'body' of each record, allowing detailed analysis of the instructional content.",
+                        "keyword": "instructional_topics"
+                    }
+                }
+            ]
+        }
+    },
+    {
+        "id": 18,
+        "Q1": {
+            "Query_Self_Contained": "Find the question in 2009",
+            "plan": [
+                {
+                    "operator_name": "sem_filter",
+                    "parameters": {
+                        "columns": [
+                            [
+                                "creation_date"
+                            ]
+                        ],
+                        "condition": "Keep only questions created in the year 2009"
+                    }
+                }
+            ]
+        },
+        "Q2": {
+            "Query_Self_Contained": "Find the question in 2009, tell me the distribution of the number of questions per month.",
+            "plan": [
+                {
+                    "operator_name": "sem_filter",
+                    "parameters": {
+                        "columns": [
+                            [
+                                "creation_date"
+                            ]
+                        ],
+                        "condition": "Keep only questions created in the year 2009"
+                    }
+                },
+                {
+                    "operator_name": "sem_group",
+                    "parameters": {
+                        "columns": [
+                            "creation_date"
+                        ],
+                        "group_description": "group into granularity month",
+                        "keyword": "month"
+                    }
+                },
+                {
+                    "operator_name": "sem_reduce",
+                    "parameters": {
+                        "columns": [
+                            "question_id"
+                        ],
+                        "group_by": "month"
+                    }
+                }
+            ]
+        },
+        "Q3": {
+            "Query_Self_Contained": "Find the question in 2009, extract the error types",
+            "plan": [
+                {
+                    "operator_name": "sem_filter",
+                    "parameters": {
+                        "columns": [
+                            [
+                                "creation_date"
+                            ]
+                        ],
+                        "condition": "Keep only questions created in the year 2009"
+                    }
+                },
+                {
+                    "operator_name": "sem_map",
+                    "parameters": {
+                        "columns": [],
+                        "map_description": "A dimension representing the different types of errors that can occur.",
+                        "keyword": "error_types"
+                    }
+                }
+            ]
+        },
+        "Q4": {
+            "Query_Self_Contained": "Find the question in 2009, summary the main error type of each month.",
+            "plan": [
+                {
+                    "operator_name": "sem_filter",
+                    "parameters": {
+                        "columns": [
+                            [
+                                "creation_date"
+                            ]
+                        ],
+                        "condition": "Keep only questions created in the year 2009"
+                    }
+                },
+                {
+                    "operator_name": "sem_group",
+                    "parameters": {
+                        "columns": [
+                            "creation_date"
+                        ],
+                        "group_description": "group into granularity month",
+                        "keyword": "month"
+                    }
+                },
+                {
+                    "operator_name": "sem_map",
+                    "parameters": {
+                        "columns": [],
+                        "map_description": "A dimension representing the different types of errors that can occur.",
+                        "keyword": "error_types"
+                    }
+                },
+                {
+                    "operator_name": "sem_reduce",
+                    "parameters": {
+                        "columns": [
+                            "error_types"
+                        ],
+                        "group_by": "month"
+                    }
+                }
+            ]
+        }
+    },
+    {
+        "id": 19,
+        "Q1": {
+            "Query_Self_Contained": "Please find the questions in 2009 with high score (above 10).",
+            "plan": [
+                {
+                    "operator_name": "num_filter",
+                    "parameters": {
+                        "conditions": [
+                            {
+                                "column": "score",
+                                "threshold": 10,
+                                "operator": ">"
+                            }
+                        ]
+                    }
+                },
+                {
+                    "operator_name": "sem_filter",
+                    "parameters": {
+                        "columns": [
+                            [
+                                "creation_date"
+                            ]
+                        ],
+                        "condition": "Only retain questions created in 2009."
+                    }
+                }
+            ]
+        },
+        "Q2": {
+            "Query_Self_Contained": "Please find the questions in 2009 with high score (above 5).",
+            "plan": [
+                {
+                    "operator_name": "num_filter",
+                    "parameters": {
+                        "conditions": [
+                            {
+                                "column": "score",
+                                "threshold": 5,
+                                "operator": ">"
+                            }
+                        ]
+                    }
+                },
+                {
+                    "operator_name": "sem_filter",
+                    "parameters": {
+                        "columns": [
+                            [
+                                "creation_date"
+                            ]
+                        ],
+                        "condition": "Only keep questions from the year 2009"
+                    }
+                }
+            ]
+        },
+        "Q3": {
+            "Query_Self_Contained": "Please find the questions in 2009 with high score (above 5), please extract their presentation feature.",
+            "plan": [
+                {
+                    "operator_name": "num_filter",
+                    "parameters": {
+                        "conditions": [
+                            {
+                                "column": "score",
+                                "threshold": 5,
+                                "operator": ">"
+                            }
+                        ]
+                    }
+                },
+                {
+                    "operator_name": "sem_filter",
+                    "parameters": {
+                        "columns": [
+                            [
+                                "creation_date"
+                            ]
+                        ],
+                        "condition": "Only keep questions from the year 2009"
+                    }
+                },
+                {
+                    "operator_name": "sem_map",
+                    "parameters": {
+                        "columns": [],
+                        "map_description": "A dimension representing the presentation feature aspect of records, indicating elements such as layout, visual style, format aspects, or any other attributes that define how information is presented.",
+                        "keyword": "presentation_feature"
+                    }
+                }
+            ]
+        },
+        "Q4": {
+            "Query_Self_Contained": "Please find the questions in 2009 with high score (above 5), tell me what presentation feature is the most popular",
+            "plan": [
+                {
+                    "operator_name": "num_filter",
+                    "parameters": {
+                        "conditions": [
+                            {
+                                "column": "score",
+                                "threshold": 5,
+                                "operator": ">"
+                            }
+                        ]
+                    }
+                },
+                {
+                    "operator_name": "sem_filter",
+                    "parameters": {
+                        "columns": [
+                            [
+                                "creation_date"
+                            ]
+                        ],
+                        "condition": "Only keep questions from the year 2009"
+                    }
+                },
+                {
+                    "operator_name": "sem_map",
+                    "parameters": {
+                        "columns": [],
+                        "map_description": "A dimension representing the presentation feature aspect of records, indicating elements such as layout, visual style, format aspects, or any other attributes that define how information is presented.",
+                        "keyword": "presentation_feature"
+                    }
+                },
+                {
+                    "operator_name": "count",
+                    "parameters": {
+                        "group_by": "presentation_feature",
+                        "columns": []
+                    }
+                },
+                {
+                    "operator_name": "sem_topk",
+                    "parameters": {
+                        "column": "presentation_feature",
+                        "query": "popularity\n Order: desc",
+                        "k": 1
+                    }
+                }
+            ]
+        }
+    },
+    {
+        "id": 20,
+        "Q1": {
+            "Query_Self_Contained": "Please find the questions from 2010",
+            "plan": [
+                {
+                    "operator_name": "sem_filter",
+                    "parameters": {
+                        "columns": [
+                            [
+                                "creation_date"
+                            ]
+                        ],
+                        "condition": "Retain questions created in 2010"
+                    }
+                }
+            ]
+        },
+        "Q2": {
+            "Query_Self_Contained": "Please find the questions from 2010, and extract the database systems discussed in them.",
+            "plan": [
+                {
+                    "operator_name": "sem_filter",
+                    "parameters": {
+                        "columns": [
+                            [
+                                "creation_date"
+                            ]
+                        ],
+                        "condition": "Retain questions created in 2010"
+                    }
+                },
+                {
+                    "operator_name": "sem_map",
+                    "parameters": {
+                        "columns": [],
+                        "map_description": "A dimension that captures the specific database system or systems discussed or tagged within each record, independent of the 'tags' dimension.",
+                        "keyword": "database_systems"
+                    }
+                }
+            ]
+        },
+        "Q3": {
+            "Query_Self_Contained": "Please find the questions from 2010, which month has the most questions?",
+            "plan": [
+                {
+                    "operator_name": "sem_filter",
+                    "parameters": {
+                        "columns": [
+                            [
+                                "creation_date"
+                            ]
+                        ],
+                        "condition": "Retain questions created in 2010"
+                    }
+                },
+                {
+                    "operator_name": "sem_group",
+                    "parameters": {
+                        "columns": [
+                            "creation_date"
+                        ],
+                        "group_description": "group into granularity month",
+                        "keyword": "month"
+                    }
+                },
+                {
+                    "operator_name": "count",
+                    "parameters": {
+                        "group_by": "month",
+                        "columns": []
+                    }
+                },
+                {
+                    "operator_name": "num_topk",
+                    "parameters": {
+                        "column": "count_of_month",
+                        "k": 1,
+                        "order": "desc"
+                    }
+                }
+            ]
+        },
+        "Q4": {
+            "Query_Self_Contained": "Please find the questions from 2010, I want to see what database systems were discussed in each month.",
+            "plan": [
+                {
+                    "operator_name": "sem_filter",
+                    "parameters": {
+                        "columns": [
+                            [
+                                "creation_date"
+                            ]
+                        ],
+                        "condition": "Retain questions created in 2010"
+                    }
+                },
+                {
+                    "operator_name": "sem_group",
+                    "parameters": {
+                        "columns": [
+                            "creation_date"
+                        ],
+                        "group_description": "group into granularity month",
+                        "keyword": "month"
+                    }
+                }
+            ]
+        }
+    }
+]

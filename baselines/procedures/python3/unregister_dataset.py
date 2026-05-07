@@ -1,0 +1,1 @@
+pz.DataDirectory().rm_registered_dataset("{{ dataset_name }}")
